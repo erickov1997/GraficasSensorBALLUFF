@@ -1,0 +1,61 @@
+ <div class="row mt-3">
+     <div class="col-12">
+         <h1>Temperatura</h1>
+     </div>
+ </div>
+ <div class="row mt-3">
+     <div class="col-3"></div>
+     <div class="col-6" style="display:flex; justify-content: center;">
+                 <div id="chart_div" ></div>
+     </div>
+     <div class="col-3"></div>
+ </div>
+ <style>
+    h1{
+        text-align: center;
+    }
+ </style>
+    
+ <script src="/socket.io/socket.io.js" charset="utf-8"> </script>
+ <script>const socket = io();</script>
+
+<script type="text/javascript">
+
+      google.charts.load('current', {'packages':['gauge']});
+      google.charts.setOnLoadCallback(drawChart);
+
+          let chart_div = document.getElementById('chart_div');
+
+          socket.on('datostemp', function(data) {
+              chart_div.innerHTML = '';
+              //console.log(data[0]);
+              drawChart(data[0].temp);
+
+          });
+
+
+      function drawChart(temp) {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['Temperatura', temp]
+        ]);
+
+        var options = {
+          width: 650, height: 420,
+          redFrom: 90, redTo: 100,
+          yellowFrom:75, yellowTo: 90,
+          minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+
+        setInterval(function() {
+          data.setValue(0, 1, temp);
+          chart.draw(data, options);
+        }, 13000);
+        
+      }
+    </script>

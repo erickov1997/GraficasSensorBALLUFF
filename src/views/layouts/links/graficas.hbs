@@ -1,0 +1,124 @@
+<div class="container">
+  <div class="row titl">
+    <div class="col-12">
+      <h1 class="title">COMBINACIÓN DE EJES</h1>
+    </div>
+  </div>
+
+  <div class="row ">
+    <div class="col-12 col-md-12 col-xs-12 graf">
+      <div class="card">
+        <div class="card-body">
+                <div id="myfirstchart2"></div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="text-align:center">
+      <span class="eje" id="ejext">X: </span> <span class="eje" id="ejex"></span>
+      <span class="eje" id="ejeyt">Y: </span> <span class="eje" id="ejey"></span>
+      <span class="eje" id="ejezt">Z: </span> <span class="eje" id="ejez"></span>
+    </div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js" charset="utf-8"> </script>
+<script>const socket = io();</script>
+<script>
+
+  let myfirstchart2 = document.getElementById('myfirstchart2');
+  let ejex = document.getElementById('ejex');
+  let ejey = document.getElementById('ejey');
+  let ejez = document.getElementById('ejez');
+
+
+  socket.on('datosmes', function (data) {
+    
+    myfirstchart2.innerHTML = '';
+    ejex.innerHTML = '';
+    ejey.innerHTML = '';
+    ejez.innerHTML = '';
+    console.log(data[0].ejex);
+    let ejexs = data[0].ejex.toString();
+    let ejeys = data[0].ejey.toString();
+    let ejezs = data[0].ejez.toString();
+    ejex.innerHTML = ejexs.slice(0, 5);
+    ejey.innerHTML = ejeys.slice(0, 5);
+    ejez.innerHTML = ejezs.slice(0, 5);
+
+
+    new Morris.Line({
+      // ID of the element in which to draw the chart.
+      element: 'myfirstchart2',
+      // Chart data records -- each entry in this array corresponds to a point on
+      // the chart.
+      data: [
+        { second: '1', value: data[0].ejex, value2: data[0].ejey, value3: data[0].ejez },
+        { second: '2', value: data[1].ejex, value2: data[1].ejey, value3: data[1].ejez },
+        { second: '3', value: data[2].ejex, value2: data[2].ejey, value3: data[2].ejez },
+        { second: '4', value: data[3].ejex, value2: data[3].ejey, value3: data[3].ejez },
+        { second: '5', value: data[4].ejex, value2: data[4].ejey, value3: data[4].ejez }
+      ],
+      // The name of the data record attribute that contains x-values.
+      xkey: 'second',
+      // A list of names of data record attributes that contain y-values.
+      ykeys: ['value', 'value2', 'value3'],
+      lineWidth: 2,
+      // Labels for the ykeys -- will be displayed when you hover over the
+      // chart.
+      labels: ['Eje x', 'Eje y', 'Eje z'],
+      resize: true,
+      lineColors: ['red', 'blue', 'black']
+    });
+
+
+  });
+
+</script>
+
+<style>
+  body{
+    background: #f5f5f5;
+  }
+  h1 {
+    text-align: center;
+  }
+
+  span {}
+
+  .eje {
+    font-size: 28px;
+  }
+
+  #ejext,
+  #ejex {
+    color: red;
+  }
+
+  #ejeyt,
+  #ejey {
+    color: blue;
+  }
+
+  #ejezt,
+  #ejez {
+    color: black;
+  }
+
+  .graf{
+    margin-top: 30px;
+  }
+  .titl{
+    margin-top: 30px;
+  }
+
+  /*@media (min-width: 500px) and (max-width: 1020px) {
+    #myfirstchart2{
+       height: 600px;
+    }
+     
+  }*/
+</style>
