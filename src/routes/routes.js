@@ -20,6 +20,10 @@ router.get("/temp",(req,res)=>{
     res.render('../views/layouts/links/Temperatura')
 })
 
+router.get("/variador",(req,res)=>{
+    res.render('../views/layouts/links/variador')
+})
+
 
 async function getEjes(){
     try{

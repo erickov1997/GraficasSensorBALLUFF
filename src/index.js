@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 
-const exhbs = require('express-handlebars');
+const exphbs = require('express-handlebars');
 const path = require('path');
 
 const db= require('./keys');
@@ -13,14 +13,14 @@ const app= express();
 app.set('port', process.env.PORT || 3006);
 
 app.set('views', path.join(__dirname, 'views'));
-app.engine('.hbs', exhbs({
+app.engine('.hbs', exphbs({
     defaultLayout:'main',
     layoutsDir:path.join(app.get('views'),'layouts'),
     partialsDir:path.join(app.get('views'),'partials'),
     extname:'.hbs'
 }));
-
 app.set('view engine', '.hbs');
+
 app.use(morgan('dev'));
 app.use(express.json());
 
@@ -31,6 +31,9 @@ app.use((req,res,next)=>{
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(require('./routes/routes'));
+
+//public
+app.use(express.static(path.join(__dirname, 'public')));
 
 const server = app.listen(app.get('port'),()=>{
     console.log('servidor en el puerto: ',app.get('port'));
@@ -50,6 +53,10 @@ io.on('connection',async (socket)=>{
         let datosTemp = await pool.request().query('select  * from temperatura');
         socket.broadcast.emit('datostemp',datosTemp.recordsets[0]);
 
-    }, 1000);
+        let variador = await pool.request().query('select TOP 1  * from variador ORDER BY id DESC');
+        socket.broadcast.emit('variador',variador.recordsets[0]);
+       
+
+    }, 800);
 
 });

@@ -1,0 +1,144 @@
+<div class="container">
+    <h1 style="text-align: center" class="mt-3">Energia</h1>
+<div class="row mt-5">
+    
+    <div class="col-md-12" style="text-align:center; display:flex; flex-wrap:wrap;">
+        <div class="col-6 col-xs-6 col-md-4">
+            <div class="card">
+                <h3 class="card-title">Fase 1A</h3>
+                <div class="card-body">
+                    <span class="eje" id="fase1A" style=" font-size: 25px; font-weight: bold;"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-xs-6 col-md-4">
+            <div class="card">
+                <h3 class="card-title">fase2A:</h3>
+                <div class="card-body">
+                   <span class="eje" id="fase2A" style=" font-size: 25px; font-weight: bold;"></span>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-xs-6 col-md-4">
+            <div class="card">
+                <h3 class="card-title">fase3A:</h3>
+                <div class="card-body">
+                    <span class="eje" id="fase3A" style=" font-size: 25px; font-weight: bold;"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-xs-6 col-md-4">
+            <div class="card">
+                <h3 class="card-title">volts L1-L2:</h3>
+                <div class="card-body">
+                    <span class="eje" id="vl1l2" style=" font-size: 25px; font-weight: bold;"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-xs-6 col-md-4">
+            <div class="card">
+                <h3 class="card-title">volts L2-L3:</h3>
+                <div class="card-body">
+                     <span class="eje" id="vl2l3" style=" font-size: 25px; font-weight: bold;"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-xs-6 col-md-4">
+            <div class="card">
+                <h3 class="card-title">volts L3-L1:</h3>
+                <div class="card-body">
+                     <span class="eje" id="vl1l3" style=" font-size: 25px; font-weight: bold;"></span>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-xs-6 col-md-4">
+            <div class="card">
+                <h3 class="card-title">Hz:</h3>
+                <div class="card-body">
+                    <span class="eje" id="hz" style=" font-size: 25px; font-weight: bold;"></span>
+
+                </div>
+            </div>
+        </div>
+
+        
+
+    </div>
+</div>
+<div class="row mt-4" style="display:flex; justify-content:center"></span>
+        <img src="/motor.png"  width="200px" height="200px">
+
+</div>
+</div>
+</div>
+
+<style>
+    
+
+    .eje{
+        font-size: 20px;
+    }
+</style>
+<script src="/socket.io/socket.io.js" charset="utf-8"> </script>
+<script>const socket = io();</script>
+<script>
+
+    let fase1A = document.getElementById('fase1A');
+    let fase2A = document.getElementById('fase2A');
+    let fase3A = document.getElementById('fase3A');
+
+    let vl1l2 = document.getElementById('vl1l2');
+    let vl2l3 = document.getElementById('vl2l3');
+    let vl1l3 = document.getElementById('vl1l3');
+    let hz = document.getElementById('hz');
+
+
+    socket.on('variador', function (data) {
+
+
+        fase1A.innerHTML = '';
+        fase2A.innerHTML = '';
+        fase3A.innerHTML = '';
+
+        vl1l2.innerHTML = '';
+        vl2l3.innerHTML = '';
+        vl1l3.innerHTML = '';
+        hz.innerHTML = '';
+
+
+        console.log(data[0].ejex);
+        let ejexs = data[0].fase1A.toString();
+        let ejeys = data[0].fase2A.toString();
+        let ejezs = data[0].fase3A.toString();
+
+        let vl1l2c = data[0].voltsL1.toString();
+        let vl1l3c = data[0].voltsL2.toString();
+        let vl3l1c = data[0].voltsL3.toString();
+        let hzc = data[0].hz.toString();
+
+        /*fase1A.innerHTML = ejexs.slice(0, 5);
+        fase2A.innerHTML = ejeys.slice(0, 5);
+        fase3A.innerHTML = ejezs.slice(0, 5);*/
+
+    
+        fase1A.innerHTML = `0.${ejexs} A.`;
+        fase2A.innerHTML = `0.${ejeys} A.`;
+        fase3A.innerHTML = `0.${ejezs} A.`;
+
+        vl1l2.innerHTML = `${vl1l2c.slice(0,3)}. ${vl1l2c.slice(3,4)} V.`;
+        vl2l3.innerHTML = `${vl1l3c.slice(0,3)}.${vl1l3c.slice(3,4)} V.`;
+        vl1l3.innerHTML = `${vl3l1c.slice(0,3)}.${vl3l1c.slice(3,4)} V.`;
+        hz.innerHTML = `${hzc.slice(0,2)}.${hzc.slice(2,3)} Hz.`;
+
+
+
+
+    });
+
+</script>
