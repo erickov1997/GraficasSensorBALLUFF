@@ -46,9 +46,13 @@ const io= SocktIO(server);
 io.on('connection',async (socket)=>{
     console.log('Conectado por socket');
     let pool= await sql.connect(db);
+    
     setInterval(async() => {
         let datosprod = await pool.request().query('select TOP 5 * from graficaEjes ORDER BY id DESC');
+        //let datosprod = await pool.request().query('select  * from graficaEjes ORDER BY id DESC');
         socket.broadcast.emit('datosmes',datosprod.recordsets[0]);
+        const[ejex,eje,ejez]=datosprod.recordsets[0];
+        console.log("ejex:",eje.ejey);
 
         let datosTemp = await pool.request().query('select  * from temperatura');
         socket.broadcast.emit('datostemp',datosTemp.recordsets[0]);

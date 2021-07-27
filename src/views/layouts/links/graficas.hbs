@@ -28,13 +28,10 @@
 <script src="/socket.io/socket.io.js" charset="utf-8"> </script>
 <script>const socket = io();</script>
 <script>
-
   let myfirstchart2 = document.getElementById('myfirstchart2');
   let ejex = document.getElementById('ejex');
   let ejey = document.getElementById('ejey');
   let ejez = document.getElementById('ejez');
-
-
   socket.on('datosmes', function (data) {
     
     myfirstchart2.innerHTML = '';
@@ -48,8 +45,6 @@
     ejex.innerHTML = ejexs.slice(0, 5);
     ejey.innerHTML = ejeys.slice(0, 5);
     ejez.innerHTML = ejezs.slice(0, 5);
-
-
     new Morris.Line({
       // ID of the element in which to draw the chart.
       element: 'myfirstchart2',
@@ -73,10 +68,7 @@
       resize: true,
       lineColors: ['red', 'blue', 'black']
     });
-
-
   });
-
 </script>
 
 <style>
@@ -86,35 +78,28 @@
   h1 {
     text-align: center;
   }
-
   span {}
-
   .eje {
     font-size: 28px;
   }
-
   #ejext,
   #ejex {
     color: red;
   }
-
   #ejeyt,
   #ejey {
     color: blue;
   }
-
   #ejezt,
   #ejez {
     color: black;
   }
-
   .graf{
     margin-top: 30px;
   }
   .titl{
     margin-top: 30px;
   }
-
   /*@media (min-width: 500px) and (max-width: 1020px) {
     #myfirstchart2{
        height: 600px;
