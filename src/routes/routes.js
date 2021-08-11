@@ -3,19 +3,19 @@ const router = express.Router();
 const db= require('../keys');
 const sql= require('mssql');
 
-router.get('/', (req,res) => {
-    res.render('../views/layouts/links/graficas')
-    /*
+router.get('/balluf', async(req,res) => { 
     try{
         let pool= await sql.connect(db);
-        let ejes = await pool.request().query('select TOP 1 * from graficaEjes ORDER BY id DESC')
+        let ejes = await pool.request().query('select TOP 5 * from graficaEjes ORDER BY id DESC')
         //console.log(ejes)
         res.json(ejes.recordsets)
     }catch(err){
         console.log(err);
-    }*/
+    }
 })
-
+router.get("/",(req,res)=>{
+    res.render('../views/layouts/links/graficas')
+})
 router.get("/temp",(req,res)=>{
     res.render('../views/layouts/links/Temperatura')
 })
